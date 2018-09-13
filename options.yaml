@@ -1,0 +1,21 @@
+smtp_setting:
+  smtp_server:
+    - 'smtp.139.com'
+  sender:
+    - '15927260404@139.com'
+  sender_passwd:
+    - '4608310zk'
+  receivers:
+    - 'm15927260404@163.com'
+    - '15927260404@139.com'
+
+monitor_setting:
+  ETH:
+    Balance_level:
+      - 3000
+    Trade_value_level:
+      - 1000
+  BTC:
+    -
+  USDT:
+    -
