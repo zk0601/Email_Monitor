@@ -25,7 +25,7 @@ class Post_email(object):
             msg['From'] = self._format_addr('监控邮件<%s>' % self.sender)
             msg['To'] = self.receivers
             msg['Subject'] = Header(header, 'utf-8').encode()
-            server = smtplib.SMTP(self.smtp_server, 25)
+            server = smtplib.SMTP_SSL(self.smtp_server, 465)
             server.set_debuglevel(1)
             server.login(self.sender, self.sender_passwd)
             server.sendmail(self.sender, self.receivers.split(','), msg.as_string())
