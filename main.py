@@ -56,7 +56,7 @@ def trade_monitor():
                 sub_body_text_list.append(body_text)
         if not len(sub_body_text_list) == 0:
             sub_body_text_list.append('##########################################################')
-        body_text_list.append('\n'.join(sub_body_text_list))
+            body_text_list.append('\n'.join(sub_body_text_list))
     if not len(body_text_list) == 0:
         email_text = '\n'.join(body_text_list)
         email = Post_email()
