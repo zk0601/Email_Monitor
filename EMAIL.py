@@ -29,7 +29,6 @@ class Post_email(object):
             server.set_debuglevel(1)
             server.login(self.sender, self.sender_passwd)
             server.sendmail(self.sender, self.receivers.split(','), msg.as_string())
-            server.quit()
         except Exception as e:
             with open(log_file, 'a') as f:
                 f.write(str(e))

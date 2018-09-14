@@ -66,7 +66,13 @@ def trade_monitor():
 if __name__ == '__main__':
     try:
         eth_balance_monitor()
+    except Exception as e:
+        with open(log_file, 'a') as f:
+            f.write(str(e))
+        eth_balance_monitor()
+    try:
         trade_monitor()
     except Exception as e:
         with open(log_file, 'a') as f:
             f.write(str(e))
+        trade_monitor()
