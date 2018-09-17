@@ -21,7 +21,7 @@ class Post_email(object):
 
     def send_email(self, text, header):
         try:
-            msg = MIMEText(text, 'plain', 'utf-8')
+            msg = MIMEText(text, 'html', 'utf-8')
             msg['From'] = self._format_addr('监控邮件<%s>' % self.sender)
             msg['To'] = self.receivers
             msg['Subject'] = Header(header, 'utf-8').encode()
