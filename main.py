@@ -24,9 +24,10 @@ def eth_balance_monitor():
         monitor_level = yaml.load(f)['monitor_setting']['ETH']['Balance_level'][0]
     for plat in now_data_dict.keys():
         if abs(float(last_data_dict[plat]) - float(now_data_dict[plat])) >= monitor_level:
-            time_str = "%s，%s" % tuple(now_hour.split())
-            body_text = "根据《曲速小程序》监测，%s平台在%s点，ETH余额从%s变化到%s，%s个ETH进行了交易" % \
-                        (plat, time_str, str(last_data_dict[plat]), str(now_data_dict[plat]), str(round(abs(float(last_data_dict[plat]) - float(now_data_dict[plat])), 4)))
+            now_time_str = "%s，%s" % tuple(now_hour.split())
+            last_time_str = "%s，%s" % tuple(last_hour.split())
+            body_text = "根据《曲速小程序》监测，%s平台于%s点到%s点，ETH余额从%s变化到%s，%s个ETH进行了交易" % \
+                        (plat,  last_time_str, now_time_str, str(last_data_dict[plat]), str(now_data_dict[plat]), str(round(abs(float(last_data_dict[plat]) - float(now_data_dict[plat])), 4)))
             body_text_list.append(body_text)
     if not len(body_text_list) == 0:
         email_text = '\n'.join(body_text_list)
