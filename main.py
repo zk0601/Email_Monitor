@@ -74,14 +74,14 @@ def eth_monitor(balance_text, trade_text):
 
 
 if __name__ == '__main__':
-    try:
-        balance_text = eth_balance_monitor()
-        trade_text = eth_trade_monitor()
-        eth_monitor(balance_text, trade_text)
-    except Exception as e:
-        with open(log_file, 'a') as f:
-            f.write(str(e))
-        balance_text = eth_balance_monitor()
-        trade_text = eth_trade_monitor()
-        eth_monitor(balance_text, trade_text)
+    while True:
+        try:
+            balance_text = eth_balance_monitor()
+            trade_text = eth_trade_monitor()
+            eth_monitor(balance_text, trade_text)
+            break
+        except Exception as e:
+            with open(log_file, 'a') as f:
+                f.write(str(e))
+            continue
 
