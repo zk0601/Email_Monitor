@@ -65,6 +65,8 @@ def eth_trade_monitor():
 
 
 def eth_monitor(balance_text, trade_text):
+    if not balance_text and not trade_text:
+        return
     email_text = "<html><body><h1>余额监控：</h1>" + balance_text + "<h1>交易监控：</h1>" + trade_text + "</body></html>"
     header = "ETH监控邮件"
     email = Post_email()
