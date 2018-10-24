@@ -103,7 +103,7 @@ class DailyMonitor(object):
             x = np.linspace(0, 23, 24)
             y = list(map(float, balance_list))
             plt.plot(x, y)
-            plt.xlabel(u'时刻', fontproperties='SimHei', fontsize=14)
+            plt.xlabel(u'Time Axis', fontproperties='SimHei', fontsize=14)
             plt.xticks(np.linspace(0, 24, 9))
             buffer = BytesIO()
             plt.savefig(buffer)
