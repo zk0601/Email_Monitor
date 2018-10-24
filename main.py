@@ -41,7 +41,7 @@ class HourMonitor(object):
 
     def eth_trade_monitor(self):
         email_text = ''
-        url = 'http://127.0.0.1:8000/eth/get_trade'
+        url = 'http://127.0.0.1:8000/eth/get_hourtrade'
         body_text_list = []
         date_format = "%Y%m%d %H"
         last_hour = datetime.datetime.now() + datetime.timedelta(hours=-1)
@@ -116,13 +116,39 @@ class DailyMonitor(object):
         return pictures
 
     def eth_trade(self):
-        pass
+        email_text = ''
+        url = 'http://127.0.0.1:8000/eth/get_trade'
+        body_text_list = []
+        date_format = "%Y%m%d"
+        yesterday = datetime.datetime.now() + datetime.timedelta(days=-1)
+        yesterday = yesterday.strftime(date_format)
+        plat_list = ['Okex', 'huobi', '币安', 'Bitfinex', 'UpBit', 'P网', 'GATE']
+        with open(Yaml_File, 'rb') as f:
+            monitor_level = yaml.load(f)['monitor_setting']['ETH']['Trade_value_level'][0]
+        for plat in plat_list:
+            sub_body_text_list = []
+            post_data = {'time': yesterday, 'platform': plat, 'value_level': monitor_level}
+            res = requests.post(url, post_data)
+            trade_info = json.loads(res.content)['data']
+            title = """<h2 style="color:red">%s平台交易，阈值：%sETH<h2>""" % (plat, monitor_level)
+            for item in trade_info:
+                if float(item["value"]) >= monitor_level:
+                    trade_url = "https://etherscan.io/tx/" + item["trade_hash"]
+                    body_text = """<p>地址: %s，时间: %s，FROM_ADDRESS:%s, TO_ADDRESS:%s, VALUE:<span style="color:red">%sETH</span></p>""" \
+                                "<a href=%s>点击查看详情</a>" % \
+                                (item["from_address"], item["trade_time"], item["from_address"], item["to_address"], item["value"], trade_url)
+                    sub_body_text_list.append(body_text)
+            text = title + '\n'.join(sub_body_text_list)
+            body_text_list.append(text)
+        if not len(body_text_list) == 0:
+            email_text = ''.join(body_text_list)
+        return email_text
 
 
     def build_email(self, picture, trade):
         today = datetime.datetime.now().strftime("%Y-%m-%d")
         header = 'ETH %s监控日报' % today
-        email_text = "<html><body><h1>%s ETH监控日报：</h1>" % today + picture + "</body></html>"
+        email_text = "<html><body><h1>%s ETH监控日报：</h1>" % today + picture + trade + "</body></html>"
         email = Post_email()
         email.send_email(email_text, header)
 
@@ -130,7 +156,7 @@ class DailyMonitor(object):
         while True:
             try:
                 picture = self.eth_make_balancepicture()
-                trade_text = ''
+                trade_text = self.eth_trade()
                 self.build_email(picture, trade_text)
                 break
             except Exception as e:
