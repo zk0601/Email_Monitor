@@ -157,6 +157,8 @@ class DailyMonitor(object):
             try:
                 picture = self.eth_make_balancepicture()
                 trade_text = self.eth_trade()
+                if not picture or not trade_text:
+                    continue
                 self.build_email(picture, trade_text)
                 break
             except Exception as e:
