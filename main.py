@@ -162,8 +162,9 @@ class DailyMonitor(object):
                 self.build_email(picture, trade_text)
                 break
             except Exception as e:
+                now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 with open(log_file, 'a') as f:
-                    f.write(str(e))
+                    f.write(now + str(e))
                 continue
 
 
