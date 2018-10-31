@@ -2,6 +2,7 @@
 import yaml
 import smtplib
 import os
+import datetime
 from email.mime.text import MIMEText
 from email.header import Header
 from email.utils import formataddr, parseaddr
@@ -30,8 +31,9 @@ class Post_email(object):
             server.login(self.sender, self.sender_passwd)
             server.sendmail(self.sender, self.receivers.split(','), msg.as_string())
         except Exception as e:
+            now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             with open(log_file, 'a') as f:
-                f.write(str(e))
+                f.write(now + str(e))
 
     def _format_addr(self, s):
         name, addr = parseaddr(s)
